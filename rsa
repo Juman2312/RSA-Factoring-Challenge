@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+rsa_factorize() {
+  local num=$1
+  local factors=($(factor "$num" | awk '{ print $2 }'))
+  local num1=${factors[-1]}
+  local num2=${factors[-2]}
+  echo "$num=$num1*$num2"
+}
+
+if [ $# -ne 1 ]; then
+  echo 'Usage: rsa <file>'
+  exit 1
+fi
+
+while read -r num; do
+  rsa_factorize "$num"
+done < "$1"

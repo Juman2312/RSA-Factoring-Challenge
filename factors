@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+check_factor() {
+  local num=$1
+  local factors=($(factor "$num" | awk '{ print $2 }'))
+
+  if (( ${#factors[@]} >= 2 )); then
+    local num1=${factors[-1]}
+    local num2=${factors[-2]}
+    echo "$num=$num1*$num2"
+  fi
+}
+
+if [ $# -ne 1 ]; then
+  echo 'Usage: factors <file>'
+  exit 1
+fi
+
+while read -r num; do
+  check_factor "$num"
+done < "$1"
